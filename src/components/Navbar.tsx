@@ -7,16 +7,18 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 
 const Navbar = () => {
     return (
-        <nav className="border-b px-6 py-4 flex gap-6 sticky top-0 bg-gray-200">
-            <NavLink to="/" className={linkClass}>
-                Home
-            </NavLink>
-            <NavLink to="/found" className={linkClass}>
-                Lost
-            </NavLink>
-            <NavLink to="/lost" className={linkClass}>
-                Found
-            </NavLink>
+        <nav className="border-b sticky top-0 bg-gray-100">
+            <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-6">
+                <NavLink to="/" className={linkClass}>
+                    Home
+                </NavLink>
+                <NavLink to="/lost" className={linkClass}>
+                    Lost
+                </NavLink>
+                <NavLink to="/found" className={linkClass}>
+                    Found
+                </NavLink>
+            </div>
         </nav>
     )
 }
