@@ -6,7 +6,7 @@ type Props = {
 
 export default function FoundItemCard({item}: Props) {
     return (
-        <div className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-md hover:bg-gray-100">
+        <div className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-md hover:bg-gray-100 hover:-translate-y-1">
             <div className="h-44 w-full bg-gray-100 border-b">
                 {item.image ? (
                     <img
