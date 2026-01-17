@@ -5,13 +5,13 @@ const Footer = () => {
         <footer className="bg-gray-50 border-t border-gray-150">
             <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    
+
                     <div>
                         <Link to="/" className="text-lg font-bold text-gray-900">
                             Lost<span className="text-blue-600">&</span>Found
                         </Link>
                         <p className="mt-4 text-sm text-gray-600 max-w-xs leading-relaxed">
-                            Die zentrale Plattform für Dornbirn und Umgebung. 
+                            Die zentrale Plattform für Dornbirn und Umgebung.
                             Helfen wir uns gegenseitig, verlorene Dinge wiederzufinden.
                         </p>
                     </div>
@@ -58,7 +58,7 @@ const Footer = () => {
                         </ul>
                     </div>
                 </div>
-                
+
                 <div className="mt-12 border-t border-gray-120 pt-8 text-center">
                     <p className="text-sm text-gray-400">
                         &copy; {new Date().getFullYear()} Lost & Found Dornbirn

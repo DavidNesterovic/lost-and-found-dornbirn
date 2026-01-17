@@ -7,6 +7,11 @@ import { useState } from 'react'
 //         ? 'text-blue-600 font-semibold'
 //         : 'text-gray-600 hover:text-blue-600'
 
+// damit machsch programmatisch die class
+// syntax: boolean ? 'fortnite' : 'pubage' =
+// if (bool) { return 'fortnite } else { return 'pubage }
+// react router die property isActive, schaut efach nur ob des die offene route isch
+
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 

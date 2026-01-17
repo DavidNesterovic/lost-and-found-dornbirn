@@ -48,7 +48,7 @@ const Found = () => {
     );
 
     return (
-        <div className="max-w-7xl mx-auto px-4 h-14">
+        <div className="max-w-7xl mx-auto px-4">
             <div className="mb-5">
                 <h1 className="text-2xl font-semibold">Found Items</h1>
                 <p className="text-sm text-gray-500">{foundItems.length} Einträge</p>
