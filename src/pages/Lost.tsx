@@ -1,17 +1,33 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import type { FoundItem } from "../types";
+import { addUserFoundItem } from "../storage/foundItemsStorage";
 
 const Lost = () => {
     // State für die Erfolgsmeldung nach dem Absenden
     const [submitted, setSubmitted] = useState(false);
 
     // Handler für das Formular (simuliert das Absenden)
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Hier würde normalerweise der API-Call kommen
+
+        const form = new FormData(e.currentTarget);
+
+        const item: FoundItem = {
+            id: crypto.randomUUID(),
+            title: String(form.get("title") ?? "").trim(),
+            category: String(form.get("category") ?? "Sonstiges"),
+            color: String(form.get("category") ?? "Keine Angabe"),
+            description: String(form.get("description") ?? "").trim(),
+            location: String(form.get("location") ?? "").trim(),
+            contactName: String(form.get("contact-name") ?? "").trim(),
+            contactEmail: String(form.get("email") ?? "").trim(),
+        };
+
+        addUserFoundItem(item);
+
         setSubmitted(true);
-        // Scrollt nach oben zur Nachricht
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     if (submitted) {
@@ -185,24 +201,6 @@ const Lost = () => {
                                 />
                             </div>
                         </div>
-
-                        {/* NEU: Telefonnummer Feld */}
-                        <div className="sm:col-span-3">
-                            <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">
-                                Telefonnummer <span className="text-gray-400 font-normal">(Optional)</span>
-                            </label>
-                            <div className="mt-2">
-                                <input
-                                    id="phone"
-                                    name="phone"
-                                    type="tel"
-                                    autoComplete="tel"
-                                    placeholder="+43 664 ..."
-                                    className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                                />
-                            </div>
-                        </div>
-
                     </div>
 
                     {/* Action Buttons */}

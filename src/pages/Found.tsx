@@ -5,6 +5,7 @@ import FoundFilters, {type Filters} from "../components/FoundFilters";
 import type {FoundItem} from "../types";
 import {breakpoints} from "../config/breakpoints.ts";
 import ItemModal from "../components/ItemModal.tsx";
+import { loadUserFoundItems } from "../storage/foundItemsStorage";
 
 const defaultFilters: Filters = {
     query: "",
@@ -33,22 +34,28 @@ const Found = () => {
     // filter Kategorien, werden später ans FoundFilters component übergeben
     const [filters, setFilters] = useState<Filters>(defaultFilters);
 
+    const userItems = loadUserFoundItems();
+
+    const allItems = useMemo(() => {
+        return [...userItems, ...foundItems];
+    }, [userItems]);
+
     const categories = useMemo(
-        () => Array.from(new Set(foundItems.map((i) => i.category))).sort(),
-        []
+        () => Array.from(new Set(allItems.map((i) => i.category))).sort(),
+        [allItems]
     );
     const colors = useMemo(
-        () => Array.from(new Set(foundItems.map((i) => i.color))).sort(),
-        []
+        () => Array.from(new Set(allItems.map((i) => i.color))).sort(),
+        [allItems]
     );
     const locations = useMemo(
-        () => Array.from(new Set(foundItems.map((i) => i.location))).sort(),
-        []
+        () => Array.from(new Set(allItems.map((i) => i.location))).sort(),
+        [allItems]
     );
 
     const filtered = useMemo(
-        () => foundItems.filter((i) => matches(i, filters)),
-        [filters]
+        () => allItems.filter((i) => matches(i, filters)),
+        [allItems, filters]
     );
 
     const isMobile = window.matchMedia(`(max-width: ${breakpoints.sm - 1}px)`);
@@ -67,7 +74,7 @@ const Found = () => {
         <div className="max-w-7xl mx-auto px-4">
             <div className="mb-5">
                 <h1 className="text-2xl font-semibold">Found Items</h1>
-                <p className="text-sm text-gray-500">{foundItems.length} Einträge</p>
+                <p className="text-sm text-gray-500">{allItems.length} Einträge</p>
             </div>
 
             <FoundFilters
