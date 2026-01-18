@@ -1,5 +1,5 @@
-import { NavLink, Link } from 'react-router-dom'
-import { useState } from 'react'
+import {NavLink, Link} from 'react-router-dom'
+import {useState} from 'react'
 
 // was das?
 // const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -16,15 +16,15 @@ const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const navLinks = [
-        { name: "Home", path: "/" },
-        { name: "Lost", path: "/lost" },
-        { name: "Found", path: "/found" },
+        {name: "Home", path: "/"},
+        {name: "Lost", path: "/lost"},
+        {name: "Found", path: "/found"},
     ]
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                
+
                 {/* LOGO */}
                 <Link to="/" className="text-xl font-bold tracking-tight text-gray-900 group">
                     Lost<span className="text-blue-600 transition-colors group-hover:text-blue-500">&</span>Found
@@ -34,22 +34,23 @@ const Navbar = () => {
                 {/* NavLink wurde von Gemini generiert */}
                 <div className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) => (
-                        <NavLink 
-                            key={link.name} 
+                        <NavLink
+                            key={link.name}
                             to={link.path}
                             className="relative group py-2"
                         >
-                            {({ isActive }) => (
+                            {({isActive}) => (
                                 <>
                                     <span className={`text-sm font-medium transition-colors duration-300 ${
                                         isActive ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-blue-600'
                                     }`}>
                                         {link.name}
                                     </span>
-                                    
-                                    <span className={`absolute bottom-0 left-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out ${
-                                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                                    }`} />
+
+                                    <span
+                                        className={`absolute bottom-0 left-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out ${
+                                            isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                                        }`}/>
                                 </>
                             )}
                         </NavLink>
@@ -70,12 +71,15 @@ const Navbar = () => {
                         className="p-2 text-gray-600 hover:text-blue-600 focus:outline-none"
                     >
                         {isMobileMenuOpen ? (
-                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
+                                 stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
                             </svg>
                         ) : (
-                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
+                                 stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round"
+                                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
                             </svg>
                         )}
                     </button>
@@ -91,7 +95,7 @@ const Navbar = () => {
                                 key={link.name}
                                 to={link.path}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={({ isActive }) =>
+                                className={({isActive}) =>
                                     `block rounded-md px-3 py-2 text-base font-medium ${
                                         isActive
                                             ? 'bg-blue-50 text-blue-600'

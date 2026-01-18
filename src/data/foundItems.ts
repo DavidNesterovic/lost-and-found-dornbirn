@@ -1,4 +1,4 @@
-import type { FoundItem } from "../types";
+import type {FoundItem} from "../types";
 
 //ki generierte Dummy Daten
 export const foundItems: FoundItem[] = [

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import {useState} from "react";
+import {ChevronUpIcon} from "@heroicons/react/24/outline";
 
 export type Filters = {
     query: string;
@@ -10,22 +11,21 @@ export type Filters = {
 type Props = {
     filters: Filters;
     onChange: (next: Filters) => void;
-
     categories: string[];
     colors: string[];
     locations: string[];
-
     onReset: () => void;
 };
 
 export default function FoundFilters({
-    filters,
-    onChange,
-    categories,
-    colors,
-    locations,
-    onReset,
-}: Props) { const [open, setOpen] = useState(false);
+                                         filters,
+                                         onChange,
+                                         categories,
+                                         colors,
+                                         locations,
+                                         onReset,
+                                     }: Props) {
+    const [open, setOpen] = useState(false);
 
     return (
         <div className="rounded-2xl border bg-white">
@@ -47,10 +47,10 @@ export default function FoundFilters({
                         {open ? "Zuklappen" : "Öffnen"}
                     </span>
                     <span
-                        className={`text-lg transition ${open ? "rotate-180" : "rotate-0"}`}
+                        className={`transition ${open ? "rotate-180" : "rotate-0"}`}
                         aria-hidden
                     >
-                        ▾
+                        <ChevronUpIcon className="h-4 w-4"/>
                     </span>
                 </div>
             </button>
@@ -67,7 +67,7 @@ export default function FoundFilters({
                             <input
                                 value={filters.query}
                                 onChange={(e) =>
-                                    onChange({ ...filters, query: e.target.value })
+                                    onChange({...filters, query: e.target.value})
                                 }
                                 placeholder="z.B. Kappe, iPhone, Schlüssel…"
                                 className="mt-1 w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2"
@@ -82,7 +82,7 @@ export default function FoundFilters({
                             <select
                                 value={filters.category}
                                 onChange={(e) =>
-                                    onChange({ ...filters, category: e.target.value })
+                                    onChange({...filters, category: e.target.value})
                                 }
                                 className="mt-1 w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2"
                             >
@@ -102,7 +102,7 @@ export default function FoundFilters({
                             </label>
                             <select
                                 value={filters.color}
-                                onChange={(e) => onChange({ ...filters, color: e.target.value })}
+                                onChange={(e) => onChange({...filters, color: e.target.value})}
                                 className="mt-1 w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2"
                             >
                                 <option value="all">Alle</option>
@@ -122,7 +122,7 @@ export default function FoundFilters({
                             <select
                                 value={filters.location}
                                 onChange={(e) =>
-                                    onChange({ ...filters, location: e.target.value })
+                                    onChange({...filters, location: e.target.value})
                                 }
                                 className="mt-1 w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2"
                             >

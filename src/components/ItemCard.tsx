@@ -1,19 +1,27 @@
-import { useState } from "react";
-import type { FoundItem } from "../types";
+import {useState} from "react";
+import type {FoundItem} from "../types";
+import {ChevronUpIcon} from "@heroicons/react/24/outline";
+
 
 type Props = {
     item: FoundItem;
     isMobile: boolean;
+    onOpen?: (item: FoundItem) => void;
 };
 
-export default function FoundItemCard({ item, isMobile }: Props) {
+export default function FoundItemCard({item, isMobile, onOpen}: Props) {
     const [open, setOpen] = useState(false);
 
     return (
-        <div className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-md hover:bg-gray-100 hover:-translate-y-1">
+        <div
+            className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-md hover:bg-gray-100 hover:-translate-y-1">
             <div
-                className={isMobile ? "cursor-pointer" : undefined}
-                onClick={() => isMobile && setOpen((v) => !v)}
+                className="cursor-pointer"
+                // on click wird entweder das Modal geöffnet, oder im mobile view (<sm) wird die card collapsed und die extra infos werden unten gerendered
+                onClick={() => {
+                    if (isMobile) setOpen((v) => !v);
+                    else onOpen?.(item);
+                }}
             >
                 <div className="h-44 w-full bg-gray-100 border-b">
                     {item.image ? (
@@ -36,7 +44,8 @@ export default function FoundItemCard({ item, isMobile }: Props) {
                             {item.title}
                         </h3>
 
-                        <span className="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                        <span
+                            className="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
                             {item.category}
                         </span>
                     </div>
@@ -76,8 +85,14 @@ export default function FoundItemCard({ item, isMobile }: Props) {
                     )}
 
                     {isMobile && (
-                        <div className="mt-3 text-xs font-medium text-gray-600 text-right">
-                            {open ? "Verbergen ▲" : "Weitere Infos ▼"}
+                        <div className="mt-3 flex items-center justify-end gap-1 text-xs font-medium text-gray-600">
+                            <span>{open ? "Verbergen" : "Weitere Infos"}</span>
+                            <span
+                                className={`transition ${open ? "rotate-180" : "rotate-0"}`}
+                                aria-hidden
+                            >
+                                <ChevronUpIcon className="h-4 w-4"/>
+                            </span>
                         </div>
                     )}
                 </div>

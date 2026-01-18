@@ -1,9 +1,10 @@
-import { foundItems } from "../data/foundItems";
+import {foundItems} from "../data/foundItems";
 import ItemCard from "../components/ItemCard";
-import { useMemo, useState } from "react";
-import FoundFilters, {type Filters } from "../components/FoundFilters";
-import type { FoundItem } from "../types";
+import {useMemo, useState} from "react";
+import FoundFilters, {type Filters} from "../components/FoundFilters";
+import type {FoundItem} from "../types";
 import {breakpoints} from "../config/breakpoints.ts";
+import ItemModal from "../components/ItemModal.tsx";
 
 const defaultFilters: Filters = {
     query: "",
@@ -52,6 +53,16 @@ const Found = () => {
 
     const isMobile = window.matchMedia(`(max-width: ${breakpoints.sm - 1}px)`);
 
+    const [selected, setSelected] = useState<FoundItem | null>(null);
+
+    function openModal(item: FoundItem) {
+        setSelected(item);
+    }
+
+    function closeModal() {
+        setSelected(null);
+    }
+
     return (
         <div className="max-w-7xl mx-auto px-4">
             <div className="mb-5">
@@ -70,9 +81,16 @@ const Found = () => {
 
             <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filtered.map((item) => (
-                    <ItemCard key={item.id} item={item} isMobile={isMobile.matches}/>
+                    <ItemCard
+                        key={item.id}
+                        item={item}
+                        isMobile={isMobile.matches}
+                        onOpen={openModal}
+                    />
                 ))}
             </div>
+
+            <ItemModal open={!!selected} item={selected} onClose={closeModal}/>
         </div>
 
 
