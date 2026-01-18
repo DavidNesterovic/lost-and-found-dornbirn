@@ -3,6 +3,7 @@ import ItemCard from "../components/ItemCard";
 import { useMemo, useState } from "react";
 import FoundFilters, {type Filters } from "../components/FoundFilters";
 import type { FoundItem } from "../types";
+import {breakpoints} from "../config/breakpoints.ts";
 
 const defaultFilters: Filters = {
     query: "",
@@ -11,6 +12,7 @@ const defaultFilters: Filters = {
     location: "all",
 };
 
+// filter helper function basierend auf den Kategorien
 function matches(item: FoundItem, f: Filters) {
     const q = f.query.trim().toLowerCase();
 
@@ -27,6 +29,7 @@ function matches(item: FoundItem, f: Filters) {
 }
 
 const Found = () => {
+    // filter Kategorien, werden später ans FoundFilters component übergeben
     const [filters, setFilters] = useState<Filters>(defaultFilters);
 
     const categories = useMemo(
@@ -47,6 +50,8 @@ const Found = () => {
         [filters]
     );
 
+    const isMobile = window.matchMedia(`(max-width: ${breakpoints.sm - 1}px)`);
+
     return (
         <div className="max-w-7xl mx-auto px-4">
             <div className="mb-5">
@@ -65,7 +70,7 @@ const Found = () => {
 
             <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filtered.map((item) => (
-                    <ItemCard key={item.id} item={item} />
+                    <ItemCard key={item.id} item={item} isMobile={isMobile.matches}/>
                 ))}
             </div>
         </div>
