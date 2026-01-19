@@ -1,42 +1,9 @@
 import { Link } from "react-router-dom";
 import FoundItemCard from "../components/ItemCard";
 import type { FoundItem } from "../types";
+import {foundItems} from "../data/foundItems";
 
-const recentItems: FoundItem[] = [
-    {
-        id: "1",
-        title: "Schwarze Kappe",
-        description: "Gefunden auf einer Bank beim Bahnhof. Leicht ausgebleicht.",
-        category: "Kleidung",
-        color: "Schwarz",
-        location: "Bahnhof Dornbirn",
-        image: "https://picsum.photos/seed/cap/800/600",
-        contactName: "Max Mustermann",
-        contactEmail: "max.mustermann@mail.at",
-    },
-    {
-        id: "2",
-        title: "iPhone 12",
-        description: "Lag auf dem Boden nahe dem Haupteingang. Display hat einen kleinen Sprung.",
-        category: "Elektronik",
-        color: "Blau",
-        location: "FH Vorarlberg",
-        image: "https://picsum.photos/seed/iphone/800/600",
-        contactName: "Laura Berger",
-        contactEmail: "laura.berger@mail.at",
-    },
-    {
-        id: "3",
-        title: "Schlüsselbund mit Lederanhänger",
-        description: "Mehrere Schlüssel an einem Ring, brauner Lederanhänger.",
-        category: "Schlüssel",
-        color: "Braun",
-        location: "Marktplatz Dornbirn",
-        image: "https://picsum.photos/seed/keys/800/600",
-        contactName: "Thomas Huber",
-        contactEmail: "thomas.huber@mail.at",
-    },
-];
+const recentItems: FoundItem[] = foundItems.slice(0, 3);
 
 const Home = () => {
     return (

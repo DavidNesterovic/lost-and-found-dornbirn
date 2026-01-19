@@ -12,7 +12,6 @@ export const loadUserFoundItems = (): FoundItem[] => {
 };
 
 export const saveUserFoundItems = (items: FoundItem[]) => {
-    console.log(items);
     localStorage.setItem(KEY, JSON.stringify(items));
 };
 

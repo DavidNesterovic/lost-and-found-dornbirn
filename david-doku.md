@@ -1,3 +1,5 @@
+# Ki Mitschrift
+
 ## Projektstart & Setup
 
 - Gemeinsames Treffen zum Projektstart
@@ -18,7 +20,7 @@
     - Gemeinsame Codebasis
     - Ermöglicht paralleles Arbeiten und Versionskontrolle
 
-- **Zeitaufwand:** ca. 2 Stunden
+- **Zeitaufwand:** ca. 3 Stunden
 
 ## Routing & Grundstruktur
 
@@ -42,3 +44,56 @@
 - Zudem noch ein Navbar gebastelt mit einem Layout über allem drüber
 
 - **Zeitaufwand:** ca. 2 Stunden
+---
+
+## 3. Datenmodell & Dummy-Daten – 2 h
+- Definition des `FoundItem`-Typs in TypeScript
+- Strukturierung realistischer Dummy-Daten
+- Trennung von Typen, Daten und UI-Komponenten
+- Erste Konsolen- und Sichttests
+
+---
+
+## 4. Item-Rendering & Card-Komponenten – 3 h
+- Entwicklung einer wiederverwendbaren Item-Card
+- Übergabe von Props und saubere Typisierung
+- Basis-Styling mit Tailwind CSS
+- Hover- und Interaction-Effekte
+- Abstimmung für Mobile- und Desktop-Ansicht
+
+---
+
+## 5. Filterlogik & State-Management – 4 h
+- Konzeption eines zentralen Filter-State-Objekts
+- Implementierung der kombinierten Filterlogik:
+  - Textsuche (Titel & Beschreibung)
+  - Kategorie
+  - Farbe
+  - Fundort
+- Performance-Optimierung mit `useMemo`
+- Tests verschiedener Filterkombinationen
+
+---
+
+## 6. Filter-UI & UX – 2 h
+- Entwicklung der `FoundFilters`-Komponente
+- Einklappbares Filter-Panel
+- Anbindung an den Filter-State
+- Mobile-freundliche Bedienung
+
+---
+
+## 7. Modal-Detailansicht – 3 h
+- Umsetzung der Item-Detailansicht als Modal
+- Öffnen- und Schließen-Logik
+- Escape-Key-Handling
+- Scroll-Lock des Hintergrunds
+- Einsatz von Icon-Buttons (Heroicons)
+- Mobile-spezifisches Verhalten
+
+---
+
+## 8. Responsive Design & Feinschliff – 1 h
+- Feinjustierung von Breakpoints und Abständen
+- Einheitliche Einrückung von Navbar und Seiteninhalt
+- Kleine UI-Verbesserungen und Refactoring  
