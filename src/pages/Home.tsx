@@ -9,7 +9,6 @@ const Home = () => {
     return (
         <div className="max-w-7xl mx-auto px-4 pb-12">
             
-            {/* Hero Section */}
             <div className="text-center pt-12 sm:pt-20">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                     Verloren & Gefunden <br className="hidden sm:inline" />
@@ -20,11 +19,9 @@ const Home = () => {
                     Hast du etwas verloren oder bist du ein ehrlicher Finder?
                 </p>
 
-                {/* BUTTONS: Jetzt nebeneinander (flex-row) und gleich breit (flex-1) */}
                 <div className="mt-10 mx-auto max-w-md w-full flex flex-row items-center justify-center gap-4 sm:gap-x-6 sm:w-auto">
                     
-                    {/* BUTTON 1: Verloren */}
-                    <Link 
+                    <Link
                         to="/lost" 
                         className="flex-1 sm:flex-none flex items-center justify-center rounded-xl bg-blue-600 py-3 sm:py-4 px-4 sm:px-8 text-base sm:text-lg font-bold text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:bg-blue-500 transition-all duration-300"
                     >
@@ -32,8 +29,7 @@ const Home = () => {
                         <span className="hidden sm:inline">Ich habe etwas verloren</span>
                     </Link>
 
-                    {/* BUTTON 2: Gefunden */}
-                    <Link 
+                    <Link
                         to="/found" 
                         className="flex-1 sm:flex-none flex items-center justify-center rounded-xl py-3 sm:py-4 px-4 sm:px-8 text-base sm:text-lg font-bold text-gray-900 ring-1 ring-inset ring-gray-300 hover:ring-gray-400 hover:bg-gray-50 transition-all duration-300"
                     >
@@ -44,7 +40,6 @@ const Home = () => {
                 </div>
             </div>
 
-                {/* Feature Section */}
                 <div className="mx-auto max-w-7xl px-0 sm:px-6 lg:px-8 mt-16">
                     <div className="bg-slate-50 rounded-3xl p-8 sm:p-16 shadow-lg ring-1 ring-gray-900/5">
                         <div className="mx-auto max-w-2xl text-center">
@@ -96,7 +91,6 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/* Recent Items Section */}
                 <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-16 mb-24">
                     <div className="flex items-center justify-between mb-8">
                         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Zuletzt Gefunden</h2>
