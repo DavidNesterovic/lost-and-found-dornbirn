@@ -1,11 +1,10 @@
-import {foundItems} from "../data/foundItems";
 import ItemCard from "../components/ItemCard";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import FoundFilters, {type Filters} from "../components/FoundFilters";
 import type {FoundItem} from "../types";
 import {breakpoints} from "../config/breakpoints.ts";
 import ItemModal from "../components/ItemModal.tsx";
-import { loadUserFoundItems } from "../storage/foundItemsStorage";
+import {getFoundItems} from "../api/foundItemsApi.ts";
 
 const defaultFilters: Filters = {
     query: "",
@@ -33,29 +32,41 @@ function matches(item: FoundItem, f: Filters) {
 const Found = () => {
     // filter Kategorien, werden später ans FoundFilters component übergeben
     const [filters, setFilters] = useState<Filters>(defaultFilters);
+    const [items, setItems] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const userItems = loadUserFoundItems();
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const data = await getFoundItems();
+                setItems(data);
+            } catch (error) {
+                console.error("Error fetching items:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const allItems = useMemo(() => {
-        return [...userItems, ...foundItems];
-    }, [userItems]);
+        fetchItems();
+    }, []);
+
 
     const categories = useMemo(
-        () => Array.from(new Set(allItems.map((i) => i.category))).sort(),
-        [allItems]
+        () => Array.from(new Set(items.map((i) => i.category))).sort(),
+        [items]
     );
     const colors = useMemo(
-        () => Array.from(new Set(allItems.map((i) => i.color))).sort(),
-        [allItems]
+        () => Array.from(new Set(items.map((i) => i.color))).sort(),
+        [items]
     );
     const locations = useMemo(
-        () => Array.from(new Set(allItems.map((i) => i.location))).sort(),
-        [allItems]
+        () => Array.from(new Set(items.map((i) => i.location))).sort(),
+        [items]
     );
 
     const filtered = useMemo(
-        () => allItems.filter((i) => matches(i, filters)),
-        [allItems, filters]
+        () => items.filter((i) => matches(i, filters)),
+        [items, filters]
     );
 
     const isMobile = window.matchMedia(`(max-width: ${breakpoints.sm - 1}px)`);
@@ -70,11 +81,13 @@ const Found = () => {
         setSelected(null);
     }
 
+    if (loading) return;
+
     return (
         <div className="max-w-7xl mx-auto px-4">
             <div className="mb-5">
                 <h1 className="text-2xl font-semibold">Gefundene Gegenstände</h1>
-                <p className="text-sm text-gray-500">{allItems.length} Einträge</p>
+                <p className="text-sm text-gray-500">{items.length} Einträge</p>
             </div>
 
             <FoundFilters

@@ -63,8 +63,8 @@ export default function ItemModal({open, item, onClose}: Props) {
 
                 <div className="max-h-[70vh] overflow-auto p-4 space-y-4">
                     <div className="h-64 w-full overflow-hidden rounded-xl bg-gray-100">
-                        {item.image ? (
-                            <img src={item.image} alt={item.title} className="h-full w-full object-cover"/>
+                        {item.imageUrl ? (
+                            <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover"/>
                         ) : (
                             <div className="flex h-full w-full items-center justify-center text-sm text-gray-500">
                                 Kein Bild

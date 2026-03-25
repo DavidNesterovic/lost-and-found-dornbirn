@@ -5,7 +5,7 @@ export type FoundItem = {
     category: string;
     color: string;
     location: string;
-    image?: string;
+    imageUrl?: string;
     contactName: string;
     contactEmail: string;
 };

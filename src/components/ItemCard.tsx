@@ -24,9 +24,9 @@ export default function FoundItemCard({item, isMobile, onOpen}: Props) {
                 }}
             >
                 <div className="h-44 w-full bg-gray-100 border-b">
-                    {item.image ? (
+                    {item.imageUrl ? (
                         <img
-                            src={item.image}
+                            src={item.imageUrl}
                             alt={item.title}
                             className="h-full w-full object-cover"
                             loading="lazy"
