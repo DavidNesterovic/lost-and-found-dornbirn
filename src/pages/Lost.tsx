@@ -1,31 +1,36 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import type {FoundItem} from "../types";
-import {addUserFoundItem} from "../storage/foundItemsStorage";
+import { addUserFoundItem } from "../storage/foundItemsStorage";
+import { createFoundItem } from "../api/foundItemsApi";
 
 const Lost = () => {
     const [submitted, setSubmitted] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const form = new FormData(e.currentTarget);
 
-        const item: FoundItem = {
-            id: crypto.randomUUID(),
+        const item = {
             title: String(form.get("title") ?? "").trim(),
             category: String(form.get("category") ?? "Sonstiges"),
-            color: String(form.get("category") ?? "Keine Angabe"),
+            color: String(form.get("color") ?? "Keine Angabe"),
             description: String(form.get("description") ?? "").trim(),
             location: String(form.get("location") ?? "").trim(),
             contactName: String(form.get("contact-name") ?? "").trim(),
             contactEmail: String(form.get("email") ?? "").trim(),
         };
 
-        addUserFoundItem(item);
+        try {
+            await createFoundItem(item);
 
-        setSubmitted(true);
-        window.scrollTo({top: 0, behavior: "smooth"});
+            setSubmitted(true);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } catch (error) {
+            alert("Es gab ein Problem bei der Verbindung zur Datenbank.");
+            console.error(error);
+        }
     };
 
     if (submitted) {
