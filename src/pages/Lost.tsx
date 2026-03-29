@@ -1,7 +1,5 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
-import type {FoundItem} from "../types";
-import { addUserFoundItem } from "../storage/foundItemsStorage";
 import { createFoundItem } from "../api/foundItemsApi";
 
 const Lost = () => {

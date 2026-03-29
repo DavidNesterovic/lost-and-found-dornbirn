@@ -13,7 +13,6 @@ const defaultFilters: Filters = {
     location: "all",
 };
 
-// filter helper function basierend auf den Kategorien
 function matches(item: FoundItem, f: Filters) {
     const q = f.query.trim().toLowerCase();
 
@@ -30,7 +29,6 @@ function matches(item: FoundItem, f: Filters) {
 }
 
 const Found = () => {
-    // filter Kategorien, werden später ans FoundFilters component übergeben
     const [filters, setFilters] = useState<Filters>(defaultFilters);
     const [items, setItems] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
