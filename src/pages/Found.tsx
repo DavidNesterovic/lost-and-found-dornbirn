@@ -1,21 +1,22 @@
 import ItemCard from "../components/ItemCard";
-import {useEffect, useMemo, useState} from "react";
-import FoundFilters, {type Filters} from "../components/FoundFilters";
-import type {FoundItem} from "../types";
-import {breakpoints} from "../config/breakpoints.ts";
+import { useEffect, useMemo, useState } from "react";
+import FoundFilters, { type Filters } from "../components/FoundFilters";
+import type { FoundItem } from "../types";
+import { breakpoints } from "../config/breakpoints.ts";
 import ItemModal from "../components/ItemModal.tsx";
-import {getFoundItems} from "../api/foundItemsApi.ts";
+import { getFoundItems, getUserEmail } from "../api/foundItemsApi.ts"; // getUserEmail importiert
 import * as signalR from "@microsoft/signalr";
-
 
 const defaultFilters: Filters = {
     query: "",
     categoryName: "all",
     color: "all",
     location: "all",
+    showOnlyMine: false, // Standardmäßig aus
 };
 
-function matches(item: FoundItem, f: Filters) {
+// match-Funktion vergleicht jetzt auch die Emails
+function matches(item: FoundItem, f: Filters, currentUserEmail: string | null) {
     const q = f.query.trim().toLowerCase();
 
     const textMatch =
@@ -27,13 +28,17 @@ function matches(item: FoundItem, f: Filters) {
     const colorMatch = f.color === "all" || item.color === f.color;
     const locationMatch = f.location === "all" || item.location === f.location;
 
-    return textMatch && categoryMatch && colorMatch && locationMatch;
+    const mineMatch = f.showOnlyMine ? item.contactEmail === currentUserEmail : true;
+
+    return textMatch && categoryMatch && colorMatch && locationMatch && mineMatch;
 }
 
 const Found = () => {
     const [filters, setFilters] = useState<Filters>(defaultFilters);
     const [items, setItems] = useState<FoundItem[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const currentUserEmail = getUserEmail();
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -86,8 +91,8 @@ const Found = () => {
     );
 
     const filtered = useMemo(
-        () => items.filter((i) => matches(i, filters)),
-        [items, filters]
+        () => items.filter((i) => matches(i, filters, currentUserEmail)),
+        [items, filters, currentUserEmail]
     );
 
     const isMobile = window.matchMedia(`(max-width: ${breakpoints.sm - 1}px)`);
@@ -108,7 +113,7 @@ const Found = () => {
         <div className="max-w-7xl mx-auto px-4">
             <div className="mb-5">
                 <h1 className="text-2xl font-semibold">Gefundene Gegenstände</h1>
-                <p className="text-sm text-gray-500">{items.length} Einträge</p>
+                <p className="text-sm text-gray-500">{filtered.length} Einträge</p>
             </div>
 
             <FoundFilters
@@ -131,13 +136,9 @@ const Found = () => {
                 ))}
             </div>
 
-            <ItemModal open={!!selected} item={selected} onClose={closeModal}/>
+            <ItemModal open={!!selected} item={selected} onClose={closeModal} />
         </div>
-
-
     )
 }
 
 export default Found
-
-

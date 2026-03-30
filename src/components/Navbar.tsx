@@ -14,7 +14,7 @@ const Navbar = () => {
     const navLinks = [
         { name: "Home", path: "/" },
         { name: "Lost", path: "/lost" },
-        { name: "Found", path: "/found" },
+        { name: "Found", path: "/found" }, 
     ];
 
     useEffect(() => {

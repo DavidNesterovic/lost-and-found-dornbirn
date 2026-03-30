@@ -5,8 +5,8 @@ export type FoundItem = {
     color: string;
     location: string;
     imageUrl?: string | null;
-    contactName: string;
-    contactEmail: string;
+    contactEmail?: string;
+    userId?: string;
     categoryId: number;
-    categoryName: string;
+    categoryName?: string;
 };
