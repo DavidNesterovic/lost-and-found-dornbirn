@@ -1,5 +1,5 @@
 import axios from "axios";
-import type {FoundItem} from "../types.ts";
+import type { FoundItem } from "../types.ts";
 
 const API_BASE_URL = "http://localhost:5016/api";
 const AUTH_BASE_URL = "http://localhost:5016";
@@ -25,8 +25,23 @@ type LoginPayload = {
     password: string;
 };
 
+type CurrentUserResponse = {
+    email: string | null;
+    isAdmin: boolean;
+};
+
+export type AdminCategory = {
+    id: string;
+    name: string;
+    itemCount: number;
+};
+
+const api = axios.create({
+    baseURL: API_BASE_URL,
+});
+
 export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_KEY);
-export const getRefreshToken = () => localStorage.getItem(REFRESH_TOKEN_KEY);
+
 export const getUserEmail = () => localStorage.getItem(USER_EMAIL_KEY);
 
 export const isLoggedIn = () => !!getAccessToken();
@@ -35,6 +50,17 @@ export const clearAuthStorage = () => {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_EMAIL_KEY);
+};
+
+export const getAuthConfig = () => {
+    const accessToken = getAccessToken();
+
+    return {
+        headers: {
+            "Content-Type": "application/json",
+            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        },
+    };
 };
 
 export const registerUser = async (payload: RegisterPayload) => {
@@ -69,8 +95,27 @@ export const logoutUser = () => {
     clearAuthStorage();
 };
 
+export const getCurrentUser = async (): Promise<CurrentUserResponse> => {
+    const response = await api.get<CurrentUserResponse>("/account/me", getAuthConfig());
+
+    if (response.data.email) {
+        localStorage.setItem(USER_EMAIL_KEY, response.data.email);
+    }
+
+    return response.data;
+};
+
+export const isAdmin = async (): Promise<boolean> => {
+    try {
+        const currentUser = await getCurrentUser();
+        return currentUser.isAdmin;
+    } catch {
+        return false;
+    }
+};
+
 export async function getFoundItems(limit?: number): Promise<FoundItem[]> {
-    const response = await axios.get<FoundItem[]>(`${API_BASE_URL}/founditems`, {
+    const response = await api.get<FoundItem[]>("/founditems", {
         params: limit ? { limit } : {},
     });
 
@@ -78,7 +123,7 @@ export async function getFoundItems(limit?: number): Promise<FoundItem[]> {
 }
 
 export const getFoundItem = async (id: number) => {
-    const response = await axios.get(`${API_BASE_URL}/founditems/${id}`);
+    const response = await api.get(`/founditems/${id}`);
     return response.data;
 };
 
@@ -89,16 +134,32 @@ export const createFoundItem = async (newItem: {
     description: string;
     location: string;
     title: string;
-    categoryId: number
+    categoryId: number;
 }) => {
-    const accessToken = getAccessToken();
+    const response = await api.post("/founditems", newItem, getAuthConfig());
+    return response.data;
+};
 
-    const response = await axios.post(`${API_BASE_URL}/founditems`, newItem, {
-        headers: {
-            "Content-Type": "application/json",
-            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-        },
-    });
+export const getCategories = async () => {
+    const response = await api.get("/categories/all");
+    return response.data;
+};
+
+export const getAdminCategories = async (): Promise<AdminCategory[]> => {
+    const response = await api.get<AdminCategory[]>("/categories/admin/all", getAuthConfig());
+    return response.data;
+};
+
+export const createCategory = async (name: string) => {
+    const response = await api.post(
+        "/categories/admin/create",
+        { name },
+        getAuthConfig()
+    );
 
     return response.data;
+};
+
+export const deleteCategory = async (id: string) => {
+    await api.delete(`/categories/${id}`, getAuthConfig());
 };

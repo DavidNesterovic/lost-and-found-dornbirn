@@ -1,12 +1,13 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { getUserEmail, isLoggedIn, logoutUser } from "../api/foundItemsApi";
+import {getUserEmail, isLoggedIn, logoutUser, getCurrentUser} from "../api/foundItemsApi";
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const [userEmail, setUserEmail] = useState<string | null>(null);
+    const [admin, setAdmin] = useState(false);
 
     const accountMenuRef = useRef<HTMLDivElement | null>(null);
     const navigate = useNavigate();
@@ -14,15 +15,32 @@ const Navbar = () => {
     const navLinks = [
         { name: "Home", path: "/" },
         { name: "Lost", path: "/lost" },
-        { name: "Found", path: "/found" }, 
+        { name: "Found", path: "/found" },
+        ...(admin ? [{ name: "Admin", path: "/admin/categories" }] : []),
     ];
 
     useEffect(() => {
-        const loggedInValue = isLoggedIn();
-        const emailValue = getUserEmail();
+        const initAuthState = async () => {
+            const loggedInValue = isLoggedIn();
+            setLoggedIn(loggedInValue);
 
-        setLoggedIn(loggedInValue);
-        setUserEmail(emailValue);
+            if (!loggedInValue) {
+                setUserEmail(null);
+                setAdmin(false);
+                return;
+            }
+
+            try {
+                const currentUser = await getCurrentUser();
+                setUserEmail(currentUser.email);
+                setAdmin(currentUser.isAdmin);
+            } catch {
+                setUserEmail(getUserEmail());
+                setAdmin(false);
+            }
+        };
+
+        initAuthState();
     }, []);
 
     useEffect(() => {
@@ -46,6 +64,7 @@ const Navbar = () => {
         logoutUser();
         setLoggedIn(false);
         setUserEmail(null);
+        setAdmin(false);
         setIsAccountMenuOpen(false);
         setIsMobileMenuOpen(false);
         navigate("/");
