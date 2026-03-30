@@ -2,8 +2,8 @@ import {useState} from "react";
 import {ChevronUpIcon} from "@heroicons/react/24/outline";
 
 export type Filters = {
+    categoryName: string;
     query: string;
-    category: string;
     color: string;
     location: string;
 };
@@ -80,9 +80,9 @@ export default function FoundFilters({
                                 Kategorie
                             </label>
                             <select
-                                value={filters.category}
+                                value={filters.categoryName}
                                 onChange={(e) =>
-                                    onChange({...filters, category: e.target.value})
+                                    onChange({...filters, categoryName: e.target.value})
                                 }
                                 className="mt-1 w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2"
                             >

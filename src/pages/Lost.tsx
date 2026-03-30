@@ -1,9 +1,24 @@
-import {useState} from "react";
-import {Link} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { createFoundItem } from "../api/foundItemsApi";
+import axios from "axios";
+
+type Category = {
+    id: number;
+    name: string;
+};
 
 const Lost = () => {
+    const [categories, setCategories] = useState<Category[]>([]);
     const [submitted, setSubmitted] = useState(false);
+
+    useEffect(() => {
+        axios.get("http://localhost:5016/api/categories")
+            .then(res => {
+                setCategories(res.data);
+            })
+            .catch(err => console.error(err));
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -12,13 +27,18 @@ const Lost = () => {
 
         const item = {
             title: String(form.get("title") ?? "").trim(),
-            category: String(form.get("category") ?? "Sonstiges"),
-            color: String(form.get("color") ?? "Keine Angabe"),
+            categoryId: Number(form.get("categoryId") ?? 0),
+            color: String(form.get("color") ?? "Keine Angabe").trim(),
             description: String(form.get("description") ?? "").trim(),
             location: String(form.get("location") ?? "").trim(),
             contactName: String(form.get("contact-name") ?? "").trim(),
             contactEmail: String(form.get("email") ?? "").trim(),
         };
+
+        if (!item.categoryId) {
+            alert("Bitte wähle eine Kategorie aus.");
+            return;
+        }
 
         try {
             await createFoundItem(item);
@@ -36,7 +56,7 @@ const Lost = () => {
             <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center">
                 <div className="rounded-full bg-green-100 p-6 mb-6">
                     <svg className="h-12 w-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Meldung erfolgreich erstellt!</h2>
@@ -45,12 +65,16 @@ const Lost = () => {
                     du benachrichtigt.
                 </p>
                 <div className="flex gap-4">
-                    <Link to="/"
-                          className="rounded-xl bg-gray-100 px-6 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-200 transition-colors">
+                    <Link
+                        to="/"
+                        className="rounded-xl bg-gray-100 px-6 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-200 transition-colors"
+                    >
                         Zurück zur Startseite
                     </Link>
-                    <Link to="/found"
-                          className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors">
+                    <Link
+                        to="/found"
+                        className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors"
+                    >
                         Fundstücke durchsuchen
                     </Link>
                 </div>
@@ -60,7 +84,6 @@ const Lost = () => {
 
     return (
         <div className="max-w-3xl mx-auto px-4 py-12 sm:py-16">
-
             <div className="text-center mb-12">
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                     Verlust melden
@@ -73,7 +96,6 @@ const Lost = () => {
             <div className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
                 <form onSubmit={handleSubmit} className="px-4 py-6 sm:p-8">
                     <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-
                         <div className="sm:col-span-4">
                             <label htmlFor="title" className="block text-sm font-medium leading-6 text-gray-900">
                                 Gegenstand (Titel)
@@ -91,22 +113,41 @@ const Lost = () => {
                         </div>
 
                         <div className="sm:col-span-2">
-                            <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="categoryId" className="block text-sm font-medium leading-6 text-gray-900">
                                 Kategorie
                             </label>
                             <div className="mt-2">
                                 <select
-                                    id="category"
-                                    name="category"
+                                    id="categoryId"
+                                    name="categoryId"
+                                    required
+                                    defaultValue=""
                                     className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                                 >
-                                    <option>Elektronik</option>
-                                    <option>Kleidung</option>
-                                    <option>Taschen & Rucksäcke</option>
-                                    <option>Schlüssel</option>
-                                    <option>Dokumente</option>
-                                    <option>Sonstiges</option>
+                                    <option value="" disabled>
+                                        Bitte wählen
+                                    </option>
+                                    {categories.map((category) => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
                                 </select>
+                            </div>
+                        </div>
+
+                        <div className="sm:col-span-3">
+                            <label htmlFor="color" className="block text-sm font-medium leading-6 text-gray-900">
+                                Farbe
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    type="text"
+                                    name="color"
+                                    id="color"
+                                    placeholder="z.B. Schwarz, Blau, Rot..."
+                                    className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                                />
                             </div>
                         </div>
 
@@ -147,8 +188,9 @@ const Lost = () => {
 
                         <div className="col-span-full border-t border-gray-900/10 pt-8 mt-4">
                             <h2 className="text-base font-semibold leading-7 text-gray-900">Kontaktinformationen</h2>
-                            <p className="mt-1 text-sm leading-6 text-gray-600">Wie können wir dich erreichen, wenn es
-                                gefunden wird?</p>
+                            <p className="mt-1 text-sm leading-6 text-gray-600">
+                                Wie können wir dich erreichen, wenn es gefunden wird?
+                            </p>
                         </div>
 
                         <div className="sm:col-span-4">

@@ -17,7 +17,6 @@ export default function FoundItemCard({item, isMobile, onOpen}: Props) {
             className="overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-md hover:bg-gray-100 hover:-translate-y-1">
             <div
                 className="cursor-pointer"
-                // on click wird entweder das Modal geöffnet, oder im mobile view (<sm) wird die card collapsed und die extra infos werden unten gerendered
                 onClick={() => {
                     if (isMobile) setOpen((v) => !v);
                     else onOpen?.(item);
@@ -46,7 +45,7 @@ export default function FoundItemCard({item, isMobile, onOpen}: Props) {
 
                         <span
                             className="shrink-0 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
-                            {item.category}
+                            {item.categoryName}
                         </span>
                     </div>
 

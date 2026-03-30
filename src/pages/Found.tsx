@@ -10,7 +10,7 @@ import * as signalR from "@microsoft/signalr";
 
 const defaultFilters: Filters = {
     query: "",
-    category: "all",
+    categoryName: "all",
     color: "all",
     location: "all",
 };
@@ -23,7 +23,7 @@ function matches(item: FoundItem, f: Filters) {
         item.title.toLowerCase().includes(q) ||
         item.description.toLowerCase().includes(q);
 
-    const categoryMatch = f.category === "all" || item.category === f.category;
+    const categoryMatch = f.categoryName === "all" || item.categoryName === f.categoryName;
     const colorMatch = f.color === "all" || item.color === f.color;
     const locationMatch = f.location === "all" || item.location === f.location;
 
@@ -32,7 +32,7 @@ function matches(item: FoundItem, f: Filters) {
 
 const Found = () => {
     const [filters, setFilters] = useState<Filters>(defaultFilters);
-    const [items, setItems] = useState<any[]>([]);
+    const [items, setItems] = useState<FoundItem[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -73,7 +73,7 @@ const Found = () => {
     }, []);
 
     const categories = useMemo(
-        () => Array.from(new Set(items.map((i) => i.category))).sort(),
+        () => Array.from(new Set(items.map((i) => i.categoryName))).sort(),
         [items]
     );
     const colors = useMemo(

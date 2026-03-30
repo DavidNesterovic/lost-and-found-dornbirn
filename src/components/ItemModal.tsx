@@ -47,7 +47,7 @@ export default function ItemModal({open, item, onClose}: Props) {
                     <div className="min-w-0">
                         <h2 className="text-lg font-semibold truncate">{item.title}</h2>
                         <div className="mt-1 text-sm text-gray-600">
-                            {item.category} • {item.location}
+                            {item.categoryName} • {item.location}
                         </div>
                     </div>
 

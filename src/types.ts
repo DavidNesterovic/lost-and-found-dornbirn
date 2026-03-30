@@ -1,11 +1,12 @@
 export type FoundItem = {
-    id: string;
+    id: number;
     title: string;
     description: string;
-    category: string;
     color: string;
     location: string;
-    imageUrl?: string;
+    imageUrl?: string | null;
     contactName: string;
     contactEmail: string;
+    categoryId: number;
+    categoryName: string;
 };

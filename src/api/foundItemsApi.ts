@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { FoundItem } from "../types";
+import type {FoundItem} from "../types.ts";
 
 const API_BASE_URL = "http://localhost:5016/api";
 const AUTH_BASE_URL = "http://localhost:5016";
@@ -69,17 +69,28 @@ export const logoutUser = () => {
     clearAuthStorage();
 };
 
-export const getFoundItems = async () => {
-    const response = await axios.get(`${API_BASE_URL}/founditems`);
+export async function getFoundItems(limit?: number): Promise<FoundItem[]> {
+    const response = await axios.get<FoundItem[]>(`${API_BASE_URL}/founditems`, {
+        params: limit ? { limit } : {},
+    });
+
     return response.data;
-};
+}
 
 export const getFoundItem = async (id: number) => {
     const response = await axios.get(`${API_BASE_URL}/founditems/${id}`);
     return response.data;
 };
 
-export const createFoundItem = async (newItem: Omit<FoundItem, "id">) => {
+export const createFoundItem = async (newItem: {
+    color: string;
+    contactEmail: string;
+    contactName: string;
+    description: string;
+    location: string;
+    title: string;
+    categoryId: number
+}) => {
     const accessToken = getAccessToken();
 
     const response = await axios.post(`${API_BASE_URL}/founditems`, newItem, {
