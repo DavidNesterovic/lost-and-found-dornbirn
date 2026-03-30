@@ -5,6 +5,8 @@ import type {FoundItem} from "../types";
 import {breakpoints} from "../config/breakpoints.ts";
 import ItemModal from "../components/ItemModal.tsx";
 import {getFoundItems} from "../api/foundItemsApi.ts";
+import * as signalR from "@microsoft/signalr";
+
 
 const defaultFilters: Filters = {
     query: "",
@@ -48,6 +50,27 @@ const Found = () => {
         fetchItems();
     }, []);
 
+    useEffect(() => {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:5016/hubs/found-items")
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("FoundItemCreated", (newItem: FoundItem) => {
+            setItems((prev) => {
+                const exists = prev.some((item) => item.id === newItem.id);
+                if (exists) return prev;
+
+                return [newItem, ...prev];
+            });
+        });
+
+        connection.start().catch((err) => console.error(err));
+
+        return () => {
+            connection.stop();
+        };
+    }, []);
 
     const categories = useMemo(
         () => Array.from(new Set(items.map((i) => i.category))).sort(),
